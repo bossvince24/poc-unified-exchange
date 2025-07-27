@@ -1,0 +1,5 @@
+package poc.example.Withdrawal.serviceImpl;
+
+public class RabbitMQService {
+
+}

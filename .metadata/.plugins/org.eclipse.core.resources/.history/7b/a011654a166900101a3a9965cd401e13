@@ -1,0 +1,5 @@
+package poc.example.Logging.listener;
+
+public class RabbitMQListener {
+
+}

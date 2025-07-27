@@ -1,0 +1,16 @@
+type Deposit {
+	id: ID!
+	accountId: Long!
+	amount: Float!
+	timestamp: String!
+	referenceNumber: String!
+	}
+	
+type Query {
+	getDepositById(id: ID!): Deposit
+	getAllDeposits: [Deposit]
+	}
+	
+type Mutation {
+	createDeposit(accountId: Long!, amount: Float!, referenceNumber: String!): Deposit
+	}

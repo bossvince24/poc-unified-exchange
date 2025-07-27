@@ -1,0 +1,40 @@
+package poc.example.Deposit.serviceImpl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+import poc.example.Deposit.entity.Deposit;
+import poc.example.Deposit.exception.DepositNotFoundException;
+import poc.example.Deposit.repository.DepositRepository;
+import poc.example.Deposit.service.DepositService;
+
+@Service
+@Slf4j
+public class DepositServiceImpl implements DepositService {
+
+	@Autowired
+	private DepositRepository repository;
+
+	@Override
+	public Deposit createDeposit(Deposit deposit) {
+		// TODO Auto-generated method stub
+		return repository.save(deposit);
+	}
+
+	@Override
+	public Deposit getDeposit(Long id) {
+		// TODO Auto-generated method stub
+		return repository.findById(id)
+				.orElseThrow(() -> new DepositNotFoundException("Deposit not found with id: " + id));
+	}
+
+	@Override
+	public List<Deposit> getAllDeposits() {
+		// TODO Auto-generated method stub
+		return repository.findAll();
+	}
+
+}

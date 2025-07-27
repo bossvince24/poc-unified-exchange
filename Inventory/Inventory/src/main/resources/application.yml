@@ -1,0 +1,23 @@
+#server
+server:
+  port: 8084
+
+#RabbitMQ
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    exchange:
+      unified: inventory.exchange
+      deposit: deposit.exchange
+      withdrawal: withdrawal.exchange
+    queue:
+      name: inventory.queue
+    routing-key: event
+
+logging:
+  level:
+    org.springframework.amqp.rabbit.listener: DEBUG
+    org.springframework.amqp.core.RabbitTemplate: DEBUG

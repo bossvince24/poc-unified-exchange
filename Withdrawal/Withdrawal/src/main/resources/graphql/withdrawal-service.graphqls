@@ -1,0 +1,16 @@
+type Withdrawal {
+	id: ID!
+	accountId: ID!
+	amount: Float!
+	timestamp: String!
+	referenceNumber: String!
+	}
+	
+type Query {
+	getWithdrawal(id: ID!): Withdrawal
+	getAllWithdrawals: [Withdrawal]
+	}
+	
+type Mutation {
+	createWithdrawal(accountId: ID!, amount: Float!): Withdrawal
+	}

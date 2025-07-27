@@ -1,0 +1,5 @@
+package poc.example.Notification.listener;
+
+public class RabbitMQListener {
+
+}

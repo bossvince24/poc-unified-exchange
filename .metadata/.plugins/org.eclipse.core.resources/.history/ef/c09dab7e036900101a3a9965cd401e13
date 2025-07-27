@@ -1,0 +1,14 @@
+package poc.example.Deposit.exception;
+
+public class DepositNotFoundException extends RuntimeException {
+
+	public DepositNotFoundException() {
+		super();
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+}

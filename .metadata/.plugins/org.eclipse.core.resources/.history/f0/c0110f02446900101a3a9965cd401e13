@@ -1,0 +1,5 @@
+package poc.example.Notification.config;
+
+public class RabbitMQConfig {
+
+}

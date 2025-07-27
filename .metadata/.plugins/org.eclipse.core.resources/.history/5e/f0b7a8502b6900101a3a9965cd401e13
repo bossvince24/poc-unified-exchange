@@ -1,0 +1,52 @@
+package poc.example.Withdrawal.serviceImpl;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import poc.example.Withdrawal.entity.Withdrawal;
+import poc.example.Withdrawal.exception.WithdrawalNotFoundException;
+import poc.example.Withdrawal.repository.WithdrawalRepository;
+import poc.example.Withdrawal.service.WithdrawalService;
+
+@Service
+public class WithdrawalServiceImpl implements WithdrawalService {
+
+	@Autowired
+	private WithdrawalRepository repository;
+
+	@Override
+	public Withdrawal createWithdrawal(Withdrawal withdrawal) {
+		// TODO Auto-generated method stub
+
+		if (withdrawal.getReferenceNumber() == null || withdrawal.getReferenceNumber().isBlank()) {
+			withdrawal.setReferenceNumber(generateReferenceNumber());
+		}
+
+		if (withdrawal.getTimestamp() == null) {
+			withdrawal.setTimestamp(LocalDateTime.now());
+		}
+		return repository.save(withdrawal);
+	}
+
+	private String generateReferenceNumber() {
+		return "DEP-" + UUID.randomUUID();
+	}
+
+	@Override
+	public Withdrawal getWithdrawal(Long id) {
+		// TODO Auto-generated method stub
+		return repository.findById(id)
+				.orElseThrow(() -> new WithdrawalNotFoundException("Withdrawal Not Found with ID " + id));
+	}
+
+	@Override
+	public List<Withdrawal> getAllWithdrawals() {
+		// TODO Auto-generated method stub
+		return repository.findAll();
+	}
+
+}

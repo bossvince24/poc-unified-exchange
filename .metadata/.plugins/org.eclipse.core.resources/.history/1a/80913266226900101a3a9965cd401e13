@@ -1,0 +1,5 @@
+package poc.example.Inventory.config;
+
+public class RabbitMQConfig {
+
+}

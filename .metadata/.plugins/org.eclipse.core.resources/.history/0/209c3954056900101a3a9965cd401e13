@@ -1,0 +1,5 @@
+package poc.example.Deposit.resolver;
+
+public class DepositResolver {
+
+}

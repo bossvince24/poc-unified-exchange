@@ -1,0 +1,43 @@
+package poc.example.Deposit.resolver;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import poc.example.Deposit.entity.Deposit;
+import poc.example.Deposit.serviceImpl.DepositServiceImpl;
+
+@Controller
+public class DepositResolver {
+
+	@Autowired
+	private DepositServiceImpl serviceImpl;
+
+	@MutationMapping
+	public Deposit createDeposit(@Argument Long accountId, @Argument BigDecimal amount) {
+
+		Deposit deposits = new Deposit();
+
+		deposits.setAccountId(accountId);
+		deposits.setAmount(amount);
+
+		return serviceImpl.createDeposit(deposits);
+	}
+
+	@QueryMapping
+	public Deposit getDeposit(@Argument Long depositId) {
+		return serviceImpl.getDeposit(depositId);
+	}
+
+	@QueryMapping
+	public List<Deposit> getAllDeposits() {
+		return serviceImpl.getAllDeposits();
+	}
+
+}

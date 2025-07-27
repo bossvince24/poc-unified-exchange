@@ -1,0 +1,5 @@
+package poc.example.Deposit.service;
+
+public interface DepositService {
+
+}

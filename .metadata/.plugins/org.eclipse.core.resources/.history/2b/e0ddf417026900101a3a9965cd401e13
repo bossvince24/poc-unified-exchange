@@ -1,0 +1,5 @@
+package poc.example.Deposit.exception;
+
+public class DepositNotFoundException {
+
+}

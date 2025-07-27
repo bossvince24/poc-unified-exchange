@@ -1,0 +1,5 @@
+package poc.example.Logging.config;
+
+public class RabbitMQConfig {
+
+}

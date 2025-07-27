@@ -1,0 +1,55 @@
+package poc.example.Logging.config;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.weaving.DefaultContextLoadTimeWeaver;
+
+@Configuration
+public class RabbitMQConfig {
+	
+	@Value("${spring.rabbitmq.exchange.unified}")
+	public String unifiedExchange;
+	
+	@Value("${spring.rabbitmq.queue.name}")
+	public String queueName;
+	
+	@Value("${spring.rabbitmq.routing-key}")
+	public String routingKey;
+	
+	@Value("${spring.rabbitmq.exchange.deposit}")
+	public String depositExchange;
+	
+	@Value("${spring.rabbitmq.exchange.withdrawal}")
+	public String withdrawalExchange;
+	
+	@Bean
+	public DirectExchange loggingExchange() {
+		return new DirectExchange(unifiedExchange);
+	}
+	
+	@Bean
+	public Queue loggingQueue() {
+		return new Queue(queueName, true);
+	}
+	
+	@Bean
+	public Binding loggingQueueBinding() {
+		return BindingBuilder.bind(loggingQueue()).to(loggingExchange()).with(routingKey);
+	}
+	
+	@Bean
+	public Binding depositToLoggingBinding() {
+		return new Binding(unifiedExchange, Binding.DestinationType.EXCHANGE, depositExchange, routingKey, null);
+	}
+	
+	@Bean
+	public Binding withdrawalToLoggingBinding() {
+		return new Binding(unifiedExchange, Binding.DestinationType.EXCHANGE, withdrawalExchange, routingKey, null);
+	}
+
+}
