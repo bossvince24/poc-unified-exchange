@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import poc.example.Deposit.dto.TransactionMessage;
 import poc.example.Deposit.entity.Deposit;
 import poc.example.Deposit.exception.DepositNotFoundException;
 import poc.example.Deposit.repository.DepositRepository;
@@ -37,7 +38,12 @@ public class DepositServiceImpl implements DepositService {
 		}
 		Deposit saved = repository.save(deposit);
 
-		rabbitMQService.sendMessage("DepositService");
+//		rabbitMQService.sendMessage("Deposit of 500 PHP by user Alex");
+
+		TransactionMessage message = new TransactionMessage("Alex", LocalDateTime.now().toString(), "Success",
+				"Deposit of 500 PHP");
+
+		rabbitMQService.sendTransactionMessage(message);
 
 		log.info("Deposit saved and sent to RabbitMQ: {}", saved.getReferenceNumber());
 		return saved;

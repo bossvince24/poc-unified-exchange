@@ -1,0 +1,63 @@
+package poc.example.Deposit.serviceImpl;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+import poc.example.Deposit.entity.Deposit;
+import poc.example.Deposit.exception.DepositNotFoundException;
+import poc.example.Deposit.repository.DepositRepository;
+import poc.example.Deposit.service.DepositService;
+
+@Service
+@Slf4j
+public class DepositServiceImpl implements DepositService {
+
+	@Autowired
+	private DepositRepository repository;
+
+	@Autowired
+	private RabbitMQService rabbitMQService;
+
+	@Override
+	public Deposit createDeposit(Deposit deposit) {
+		// TODO Auto-generated method stub
+		log.info("Creating deposit...");
+
+		if (deposit.getReferenceNumber() == null || deposit.getReferenceNumber().isBlank()) {
+			deposit.setReferenceNumber(generateReferenceNumber());
+		}
+
+		if (deposit.getTimestamp() == null) {
+			deposit.setTimestamp(LocalDateTime.now());
+		}
+		Deposit saved = repository.save(deposit);
+
+		rabbitMQService.sendMessage("Deposit of 500 PHP by user Alex");
+
+		log.info("Deposit saved and sent to RabbitMQ: {}", saved.getReferenceNumber());
+		return saved;
+	}
+
+	private String generateReferenceNumber() {
+		return "DEP-" + UUID.randomUUID();
+	}
+
+	@Override
+	public Deposit getDeposit(Long id) {
+		// TODO Auto-generated method stub
+		return repository.findById(id)
+				.orElseThrow(() -> new DepositNotFoundException("Deposit not found with id: " + id));
+	}
+
+	@Override
+	public List<Deposit> getAllDeposits() {
+		// TODO Auto-generated method stub
+		return repository.findAll();
+	}
+
+}

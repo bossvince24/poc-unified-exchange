@@ -12,35 +12,41 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import poc.example.Deposit.config.RabbitMQConfig;
+import poc.example.Deposit.dto.TransactionMessage;
 
 @Service
 @Slf4j
 public class RabbitMQService {
-	
+
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
-	
+
 	@Autowired
 	private RabbitMQConfig rabbitMQConfig;
-	
-	public void sendMessage(String message) {
-		
-		log.info("Sending Message to the RabbitMQ Exchange: {}", message);
-		
-		HashMap<String, String> mapAuditLog = new HashMap<>();
-		mapAuditLog.put("Username", message);
-		mapAuditLog.put("TransactionDate", LocalDateTime.now().toString());
-		mapAuditLog.put("Type", "Success");
-		
-		String requestMessage = "";
-		try {
-			requestMessage = new ObjectMapper().writeValueAsString(mapAuditLog);
-		} catch (JsonProcessingException e) {
-			// TODO: handle exception
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-		rabbitTemplate.convertAndSend(rabbitMQConfig.exchangeName, rabbitMQConfig.routingKey, requestMessage);
-		log.info("Sent message to RabbitMQ Exchange {}: {}", rabbitMQConfig.exchangeName, message);
+
+	public void sendTransactionMessage(TransactionMessage message) {
+		log.info("Sending message to RabbitMQ Exchange: {}", message);
+		rabbitTemplate.convertAndSend(rabbitMQConfig.exchangeName, rabbitMQConfig.routingKey, message);
 	}
+
+//	public void sendMessage(String message) {
+//		
+//		log.info("Sending Message to the RabbitMQ Exchange: {}", message);
+//		
+//		HashMap<String, String> mapAuditLog = new HashMap<>();
+//		mapAuditLog.put("Username", message);
+//		mapAuditLog.put("TransactionDate", LocalDateTime.now().toString());
+//		mapAuditLog.put("Type", "Success");
+//		
+//		String requestMessage = "";
+//		try {
+//			requestMessage = new ObjectMapper().writeValueAsString(mapAuditLog);
+//		} catch (JsonProcessingException e) {
+//			// TODO: handle exception
+//			log.error(e.getMessage());
+//			e.printStackTrace();
+//		}
+//		rabbitTemplate.convertAndSend(rabbitMQConfig.exchangeName, rabbitMQConfig.routingKey, requestMessage);
+//		log.info("Sent message to RabbitMQ Exchange {}: {}", rabbitMQConfig.exchangeName, message);
+//	}
 }

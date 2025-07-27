@@ -1,0 +1,5 @@
+package poc.example.Deposit.dto;
+
+public class TransactionMessage {
+
+}
